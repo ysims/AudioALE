@@ -140,10 +140,10 @@ if device_type == "cpu":  # CUDA IS NOT AVAILABLE
     os.environ["MKL_NUM_THREADS"] = str(n_cpu_to_use)
     os.environ["KMP_AFFINITY"] = "compact"
 
-if args.mode == "test":
-    verbose = True
-else:
-    verbose = False
+# if args.mode == "test":
+verbose = True
+# else:
+#     verbose = False
 
 if verbose:
     print(
@@ -174,13 +174,13 @@ n_class = len(attr)
 n_s_class = len(s_attr)
 n_u_class = len(u_attr)
 
-if verbose:
-    print("Seen train 	:", x_s_train.size())
-    print("Seen test 	:", x_s_test.size())
-    print("Unseen test 	:", x_u_test.size())
-    print("Attrs 		:", attr.size())
-    print("Seen Attrs 	:", s_attr.size())
-    print("Unseen Attrs	:", u_attr.size())
+# if verbose:
+    # print("Seen train 	:", x_s_train.size())
+    # print("Seen test 	:", x_s_test.size())
+    # print("Unseen test 	:", x_u_test.size())
+    # print("Attrs 		:", attr.size())
+    # print("Seen Attrs 	:", s_attr.size())
+    # print("Unseen Attrs	:", u_attr.size())
 
 # seeds = [123]
 seeds = [
@@ -191,9 +191,7 @@ print("Running {} trials.".format(n_trials))
 
 accs = np.zeros([n_trials, args.n_epoch, 4], "float32")
 
-best_accs = []
 for trial, seed in enumerate(seeds):
-    best_acc = 0.0
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -286,23 +284,11 @@ for trial, seed in enumerate(seeds):
 
             if verbose:
                 print("Zero-Shot acc            : %f" % acc_zsl)
-                print("Generalized Seen acc     : %f" % acc_g_seen)
-                print("Generalized Unseen acc   : %f" % acc_g_unseen)
-                print("H-Score                  : %f" % h_score)
+                # print("Generalized Seen acc     : %f" % acc_g_seen)
+                # print("Generalized Unseen acc   : %f" % acc_g_unseen)
+                # print("H-Score                  : %f" % h_score)
 
-            if best_acc < acc_zsl:
-                best_acc = acc_zsl
-
-    best_accs.append(best_acc)
-    print("Best for run {} is {}.".format(trial, best_acc))
-
-mean_best = statistics.mean(best_accs)
-stdev_best = statistics.stdev(best_accs)
-
-print("Mean best acc is", mean_best)
-print("Standard deviation best acc is", stdev_best)
-print("Best of the best is {}".format(max(best_accs)))
-
+    print("Trial {} accuracy is {}.".format(trial, acc_zsl))
 
 zsl_mean = accs[:, :, 0].mean(axis=0)
 zsl_std = accs[:, :, 0].std(axis=0)
