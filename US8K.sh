@@ -2,7 +2,7 @@
 
 #train
 python3 train.py \
-			--dataset="FSC22" \
+			--dataset="UrbanSound8k" \
 			--fold=$1 \
 			--mode='validation' \
 			--optim_type="adam" \
@@ -12,4 +12,4 @@ python3 train.py \
 			--n_epoch=10 \
 			--batch_size=64 \
 			--folder=$2 \
- 			--device=$3 
+ 			--device=$3
