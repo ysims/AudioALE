@@ -44,8 +44,7 @@ import statistics
 from torch.utils.data import TensorDataset, DataLoader
 
 from classifier import Compatibility, evaluate
-from dataloaders.esc50 import DatasetESC50, index_labels
-from dataloaders.fsc22 import DatasetFSC22, index_labels
+from dataloaders.dataset import Dataset, index_labels
 from loss import WARP
 
 FN = torch.from_numpy
@@ -79,11 +78,55 @@ if args.dataset == "ESC-50":
         val_classes = [23, 41, 14, 24, 33, 30, 4, 17, 10, 45]
     elif args.fold == "fold34":
         val_classes = [47, 34, 20, 44, 25, 6, 7, 1, 28, 18]
+
 elif args.dataset == "FSC22":
     print("FSC22")
     #  train_classes = [0, 1, 2, 3, 4, 10, 11, 14, 16, 19, 20, 24, 25]
     val_classes = [6, 8, 9, 12, 13, 18, 22]
     test_classes = [5, 7, 15, 17, 21, 23, 26]
+
+elif args.dataset == "UrbanSound8k":
+    print("UrbanSound8k")
+    # args.train_classes = [0, 1, 2, 4, 5, 7, 8]
+    val_classes = [3, 6, 9]
+    test_classes = [3, 6, 9]
+
+elif args.dataset == "TAU2019":
+    print("TAU2019")
+    # args.train_classes = [2, 3, 4, 5, 7, 8, 9]
+    val_classes = [0, 1, 6]
+    test_classes = [0, 1, 6]
+
+elif args.dataset == "GTZAN":
+    print("GTZAN")
+    # args.train_classes = [0, 1, 2, 6, 7, 8, 9]
+    val_classes = [3, 4, 5]
+    test_classes = [3, 4, 5]
+
+elif args.dataset == "ARCA23K-FSD":
+    print("ARCA23K-FSD")
+    # test_classes = ['Female_singing', 'Wind_chime', 'Dishes_and_pots_and_pans', 'Scratching_(performance_technique)', 'Crying_and_sobbing', 'Waves_and_surf', 'Screaming', 'Bark', 'Camera', 'Organ']
+    test_classes = np.linspace(60, 69, 10)
+    val_classes = np.linspace(60, 69, 10)
+    if args.fold == "fold0":
+        val_classes = np.linspace(0, 9, 10)
+        # val_classes = ['Crash_cymbal', 'Run', 'Zipper_(clothing)', 'Acoustic_guitar', 'Gong', 'Knock', 'Train', 'Crack', 'Cough', 'Cricket']
+    elif args.fold == "fold1":
+        val_classes = np.linspace(10, 19, 10)
+        # val_classes = ['Electric_guitar', 'Chewing_and_mastication', 'Keys_jangling', 'Female_speech_and_woman_speaking', 'Crumpling_and_crinkling', 'Skateboard', 'Computer_keyboard', 'Bass_guitar', 'Stream', 'Toilet_flush']
+    elif args.fold == "fold2":
+        # val_classes = ['Tap', 'Water_tap_and_faucet', 'Squeak', 'Snare_drum', 'Finger_snapping', 'Walk_and_footsteps', 'Meow', 'Rattle_(instrument)', 'Bowed_string_instrument', 'Sawing']
+        val_classes = np.linspace(20, 29, 10)
+    elif args.fold == "fold3":
+        # val_classes = ['Rattle', 'Slam', 'Whoosh_and_swoosh_and_swish', 'Hammer', 'Fart', 'Harp', 'Coin_(dropping)', 'Printer', 'Boom', 'Giggle']
+        val_classes = np.linspace(30, 39, 10)
+    elif args.fold == "fold4":
+        # val_classes = ['Clapping', 'Crushing', 'Livestock_and_farm_animals_and_working_animals', 'Scissors', 'Writing', 'Wind', 'Crackle', 'Tearing', 'Piano', 'Microwave_oven']
+        val_classes = np.linspace(40, 49, 10)
+    elif args.fold == "fold5":
+        # val_classes = ['Trumpet', 'Wind_instrument_and_woodwind_instrument', 'Child_speech_and_kid_speaking', 'Drill', 'Thump_and_thud', 'Drawer_open_or_close', 'Male_speech_and_man_speaking', 'Gunshot_and_gunfire', 'Burping_and_eructation', 'Splash_and_splatter']
+        val_classes = np.linspace(50, 59, 10)
+
 
 device_type = args.device
 device = torch.device(device_type)
@@ -108,10 +151,7 @@ if verbose:
         % (args.dataset.upper(), args.mode.upper(), device_type.upper())
     )
 
-if args.dataset == "ESC-50":
-    dset = DatasetESC50(args.folder, val_classes, test_classes, args.fold)
-elif args.dataset == "FSC22":
-    dset = DatasetFSC22(args.folder, val_classes, test_classes, args.fold)
+dset = Dataset(args.folder, val_classes, test_classes, args.fold)
 
 x_s_train = FN(dset.x_s_train).float().to(device)
 y_s_train = FN(dset.y_s_train).to(device)

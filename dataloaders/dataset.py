@@ -43,14 +43,8 @@ import sys
 np.set_printoptions(threshold=sys.maxsize)
 
 
-class DatasetESC50:
+class Dataset:
     def __init__(self, data, val, test, fold):
-        # Get the train class numbers
-        train = list(range(50))
-        train = [t for t in train if t not in val and t not in test]
-        train.sort()
-        val.sort()
-        test.sort()
 
         # Get the pickled data
         with open(data, "rb") as f:
@@ -67,6 +61,13 @@ class DatasetESC50:
         val_labels = []
         val_features = []
         val_auxiliary = []
+
+        # Get the train class numbers
+        train = list(range(len(np.unique(all_labels))))
+        train = [t for t in train if t not in val and t not in test]
+        train.sort()
+        val.sort()
+        test.sort()
 
         for i in range(len(all_labels)):
             if (fold == "test"):
