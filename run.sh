@@ -6,13 +6,13 @@ sh ./US8K.sh test ../pickles/urbansound8k/YAMNet_synonyms_test.pickle cuda > res
 echo "Running TAU2019 test..."
 sh ./TAU2019.sh test ../pickles/tau2019/YAMNet_synonyms_test.pickle cuda > results/tau2019.txt
 echo "Running ESC50 fold0..."
-sh ./ESC-50.sh fold0 ../pickles/esc50/ESC_50_synonyms/fold04.pickle cuda > results/esc50fold0.txt
+sh ./ESC-50.sh fold04 ../pickles/esc50/ESC_50_synonyms/fold04.pickle cuda > results/esc50fold0.txt
 echo "Running ESC50 fold1..."
-sh ./ESC-50.sh fold1 ../pickles/esc50/ESC_50_synonyms/fold14.pickle cuda > results/esc50fold1.txt
+sh ./ESC-50.sh fold14 ../pickles/esc50/ESC_50_synonyms/fold14.pickle cuda > results/esc50fold1.txt
 echo "Running ESC50 fold2..."
-sh ./ESC-50.sh fold2 ../pickles/esc50/ESC_50_synonyms/fold24.pickle cuda > results/esc50fold2.txt
+sh ./ESC-50.sh fold24 ../pickles/esc50/ESC_50_synonyms/fold24.pickle cuda > results/esc50fold2.txt
 echo "Running ESC50 fold3..."
-sh ./ESC-50.sh fold3 ../pickles/esc50/ESC_50_synonyms/fold34.pickle cuda > results/esc50fold3.txt
+sh ./ESC-50.sh fold34 ../pickles/esc50/ESC_50_synonyms/fold34.pickle cuda > results/esc50fold3.txt
 echo "Running ESC50 test..."
 sh ./ESC-50.sh test ../pickles/esc50/ESC_50_synonyms/fold4.pickle cuda > results/esc50test.txt
 echo "Running FSC22 val..."
